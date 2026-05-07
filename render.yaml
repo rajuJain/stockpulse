@@ -11,7 +11,7 @@ services:
     plan: free
     region: oregon              # closest to Vercel's default edge
     rootDir: backend
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: node dist/main.js
     healthCheckPath: /api/v1/auth/me   # 401 response counts as "up"
     autoDeploy: true                   # redeploy on every git push to main
