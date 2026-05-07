@@ -1,0 +1,19 @@
+# Railway config — alternative to Render+Aiven if you want everything in one place
+# Uses your $5/month free credit. After credit runs out it's ~$5/mo.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "backend/Dockerfile"
+
+[deploy]
+startCommand = "node dist/main.js"
+healthcheckPath = "/api/v1/auth/me"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Required env vars (set these in Railway dashboard):
+#   DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
+#   JWT_ACCESS_SECRET (generate a random 64-char string)
+#   CORS_ORIGINS (your frontend URL)
+#   MARKET_DATA_SIMULATE = "true"
