@@ -1,7 +1,7 @@
 import { Injectable, ExecutionContext, CanActivate, ForbiddenException, SetMetadata } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from '../users/user.entity';
+import { UserRole } from '../../users/user.entity';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {}

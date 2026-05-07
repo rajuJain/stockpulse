@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { AuthService } from './auth.service';
-import { UserStatus } from '../users/user.entity';
+import { AuthService } from '../auth.service';
+import { UserStatus } from '../../users/user.entity';
 
 export interface JwtPayload { sub: number; role: string; sebi: boolean; sebiVerified: boolean; }
 
