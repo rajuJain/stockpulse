@@ -1,0 +1,101 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+/* ─── StockPulse Dark Theme Palette ─────────────────────────────────────── */
+$sp-primary-palette: (
+  50: #E0FBF7, 100: #B3F5EC, 200: #80EFE0, 300: #4DE9D4,
+  400: #2DD4BF, 500: #14B8A6, 600: #0D9488, 700: #0F766E,
+  800: #115E59, 900: #134E4A,
+  contrast: (50:#000, 100:#000, 200:#000, 300:#000, 400:#000, 500:#fff, 600:#fff, 700:#fff, 800:#fff, 900:#fff)
+);
+$sp-theme: mat.define-dark-theme((
+  color: ( primary: mat.define-palette($sp-primary-palette, 400), accent: mat.define-palette(mat.$blue-palette, A200), warn: mat.define-palette(mat.$red-palette) ),
+  typography: mat.define-typography-config($font-family: 'Inter, sans-serif'),
+));
+@include mat.all-component-themes($sp-theme);
+
+/* ─── CSS Custom Properties (design tokens) ─────────────────────────────── */
+:root {
+  --sp-canvas:     #0C1018;
+  --sp-surface:    #131827;
+  --sp-raised:     #1A2236;
+  --sp-line:       rgba(148, 163, 184, 0.12);
+
+  --sp-ink:        #F1F5F9;
+  --sp-ink-md:     #CBD5E1;
+  --sp-ink-dim:    #94A3B8;
+  --sp-ink-xs:     #64748B;
+
+  --sp-teal:       #2DD4BF;
+  --sp-teal-dim:   rgba(45, 212, 191, 0.15);
+  --sp-amber:      #F59E0B;
+  --sp-red:        #EF4444;
+  --sp-red-dim:    rgba(239, 68, 68, 0.12);
+  --sp-up:         #2DD4BF;
+  --sp-up-dim:     rgba(45, 212, 191, 0.15);
+}
+
+/* ─── Reset + Base ──────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--sp-canvas);
+  color: var(--sp-ink);
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+}
+
+/* ─── Scrollbars ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.35); }
+
+/* ─── Material Component Tweaks ─────────────────────────────────────────── */
+.mat-mdc-card {
+  background: var(--sp-surface) !important;
+  color: var(--sp-ink) !important;
+  border: 1px solid var(--sp-line);
+  border-radius: 10px !important;
+}
+
+.mat-mdc-form-field {
+  font-size: 13px;
+}
+
+.mat-mdc-tab-group .mat-mdc-tab-header {
+  border-bottom: 1px solid var(--sp-line);
+}
+
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-flat-button, .mat-mdc-stroked-button {
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: var(--sp-surface);
+  --mdc-snackbar-supporting-text-color: var(--sp-ink);
+}
+.mat-mdc-snack-bar-container.snack-ok {
+  --mdc-snackbar-container-color: var(--sp-teal-dim);
+  --mdc-snackbar-supporting-text-color: var(--sp-teal);
+}
+
+.mat-mdc-header-cell {
+  background: var(--sp-raised) !important;
+  color: var(--sp-ink-xs) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
+  text-transform: uppercase;
+}
+
+.mat-mdc-row, .mat-mdc-cell {
+  border-bottom-color: var(--sp-line) !important;
+}
+
+/* ─── Utility Classes ───────────────────────────────────────────────────── */
+.up { color: var(--sp-teal); }
+.dn { color: var(--sp-red); }
+.dim { color: var(--sp-ink-dim); }
