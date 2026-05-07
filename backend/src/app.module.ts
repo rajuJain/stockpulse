@@ -27,19 +27,33 @@ import { RealtimeModule } from './realtime/realtime.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (cfg: ConfigService) => ({
-        type: 'mysql',
-        host:     cfg.get('DB_HOST', 'localhost'),
-        port:     parseInt(cfg.get('DB_PORT', '3306'), 10),
-        username: cfg.get('DB_USER', 'root'),
-        password: cfg.get('DB_PASSWORD', ''),
-        database: cfg.get('DB_NAME', 'stockpulse'),
-        autoLoadEntities: true,
-        synchronize: false,
-        charset: 'utf8mb4',
-        timezone: 'Z',
-        extra: { connectionLimit: 20 },
-      }),
+      useFactory: (cfg: ConfigService) => {
+        // Managed MySQL providers (Aiven, TiDB, PlanetScale) require SSL.
+        // If DB_SSL_CA is set, use it; if DB_SSL=true is set without a cert,
+        // accept any cert (TiDB Serverless mode).
+        const sslCa = cfg.get<string>('DB_SSL_CA');
+        const sslEnabled = cfg.get<string>('DB_SSL') === 'true' || !!sslCa;
+        const ssl = sslEnabled
+          ? sslCa
+            ? { ca: sslCa, rejectUnauthorized: true }
+            : { rejectUnauthorized: false }
+          : undefined;
+
+        return {
+          type: 'mysql',
+          host:     cfg.get('DB_HOST', 'localhost'),
+          port:     parseInt(cfg.get('DB_PORT', '3306'), 10),
+          username: cfg.get('DB_USER', 'root'),
+          password: cfg.get('DB_PASSWORD', ''),
+          database: cfg.get('DB_NAME', 'stockpulse'),
+          autoLoadEntities: true,
+          synchronize: false,
+          charset: 'utf8mb4',
+          timezone: 'Z',
+          ssl,                                           // ← NEW
+          extra: { connectionLimit: 5 },                 // free tiers cap connections
+        };
+      },
     }),
 
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
